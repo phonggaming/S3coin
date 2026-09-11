@@ -290,14 +290,30 @@ app.post('/api/admin/validate-chain', requireAuth, requireAdmin, validateChainHa
 app.get('/api/admin/audit-logs', requireAuth, requireAdmin, getAuditLogsHandler);
 app.get('/api/admin/mining-logs', requireAuth, requireAdmin, getMiningLogsHandler);
 
+let initPromise: Promise<void> | null = null;
+export async function ensureInitialized() {
+  if (!initPromise) {
+    initPromise = (async () => {
+      console.log('[S3COIN] Initializing S3Coin Database & Genesis...');
+      await initDatabase();
+      initGenesisBlock();
+    })();
+  }
+  return initPromise;
+}
+
 // ==========================================
 // 6. INITIALIZE DB & START SERVER
 // ==========================================
 async function start() {
   try {
     console.log('[S3COIN] Booting S3Coin Node...');
-    await initDatabase();
-    initGenesisBlock();
+    await ensureInitialized();
+
+    // Do not start standalone HTTP listener on Vercel (serverless handles requests)
+    if (process.env.VERCEL) {
+      return;
+    }
 
     // Vite middleware for dev mode
     if (process.env.NODE_ENV !== 'production') {
@@ -324,3 +340,5 @@ async function start() {
 }
 
 start();
+
+export default app;

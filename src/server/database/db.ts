@@ -3,7 +3,8 @@ import path from 'path';
 import initSqlJs, { Database } from 'sql.js';
 
 let dbInstance: Database | null = null;
-const DB_DIR = path.join(process.cwd(), 'data');
+const isVercel = Boolean(process.env.VERCEL);
+const DB_DIR = isVercel ? '/tmp' : (process.env.DATABASE_DIR || path.join(process.cwd(), 'data'));
 const DB_PATH = process.env.DATABASE_PATH 
   ? path.resolve(process.env.DATABASE_PATH)
   : path.join(DB_DIR, 's3coin.sqlite');

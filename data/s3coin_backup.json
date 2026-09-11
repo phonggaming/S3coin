@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "id": 3,
-      "username": "miner_tester_1789122123775",
-      "email": "miner_tester_1789122123775@s3coin.test",
+      "id": 1,
+      "username": "miner_tester_1789123991469",
+      "email": "miner_tester_1789123991469@s3coin.test",
       "password_hash": "hash",
-      "miner_token": "4bc492b7e9d7b58c46d7dad1b9a118be32b7aea2989cb8f47bab8cfb7fe5b374",
+      "miner_token": "b5b82622a7f48faefe6c85a9c7260c4b72051758542cfc275228baa735573738",
       "balance_s3": 50,
       "total_mined": 50,
-      "created_at": 1789122123775,
+      "created_at": 1789123991470,
       "last_login": null,
       "status": "active",
       "is_admin": 0
@@ -27,27 +27,27 @@
       "merkle_root": "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b",
       "nonce": 0,
       "reward": 0,
-      "created_at": 1789122123759
+      "created_at": 1789123991423
     },
     {
       "height": 1,
-      "hash": "000004cfa44598c6259c30b204ad54fd470ea3f1f846626a0936bc05129d4d73",
+      "hash": "000006a9d4f43f261e4f7b692adf949c2b1fefb5efb92dbef26195d0cac87a21",
       "previous_hash": "8da58578617555d56d5245083b748a8634de37b3518a1483c0be927e71ded40a",
-      "timestamp": 1789122123,
+      "timestamp": 1789123991,
       "difficulty": 1,
       "target": "000007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-      "miner_user_id": 3,
-      "miner_token": "4bc492b7e9d7b58c46d7dad1b9a118be32b7aea2989cb8f47bab8cfb7fe5b374",
-      "merkle_root": "ad45cd85f989bb1020d6636642e50f2fabe13e0458085554cfee7cde99086ea8",
-      "nonce": 296349,
+      "miner_user_id": 1,
+      "miner_token": "b5b82622a7f48faefe6c85a9c7260c4b72051758542cfc275228baa735573738",
+      "merkle_root": "841940eb2cfa1b3868b217cb6fb35aba74d28bfc2b820c161ceb644724a20c0a",
+      "nonce": 812758,
       "reward": 50,
-      "created_at": 1789122124265
+      "created_at": 1789123992598
     }
   ],
   "withdrawals": [
     {
-      "id": 2,
-      "user_id": 3,
+      "id": 1,
+      "user_id": 1,
       "amount_s3": 30,
       "amount_vnd": 3,
       "exchange_rate": 0.1,
@@ -55,10 +55,10 @@
       "destination": "0123456789",
       "status": "REJECTED",
       "admin_note": null,
-      "created_at": 1789122124282,
-      "updated_at": 1789122124282
+      "created_at": 1789123992610,
+      "updated_at": 1789123992610
     }
   ],
   "settings": [],
-  "exported_at": 1789122124287
+  "exported_at": 1789123992615
 }
