@@ -38,6 +38,19 @@
       "last_login": 1789126458231,
       "status": "active",
       "is_admin": 0
+    },
+    {
+      "id": 9,
+      "username": "miner_test_user99",
+      "email": "miner99@test.com",
+      "password_hash": "$2b$10$INUnOybWkQvwzxe66ddq7edkCUjM/iU5GQvTes8SHQWIMvZA2LDFu",
+      "miner_token": "3618f9116f8ae0f00a4181f2280e64269ac13726b2f0f41f8783482c5da99592",
+      "balance_s3": 0,
+      "total_mined": 0,
+      "created_at": 1789127778603,
+      "last_login": 1789127789814,
+      "status": "active",
+      "is_admin": 0
     }
   ],
   "blocks": [
@@ -117,5 +130,5 @@
       "updated_at": 1789126420854
     }
   ],
-  "exported_at": 1789126458234
+  "exported_at": 1789127789816
 }

@@ -3,8 +3,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import initSqlJs, { Database } from 'sql.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+function getSafeDirname(): string {
+  if (typeof __dirname !== 'undefined') {
+    return __dirname;
+  }
+  try {
+    // In ESM environments
+    if (typeof import.meta !== 'undefined' && import.meta && import.meta.url) {
+      return path.dirname(fileURLToPath(import.meta.url));
+    }
+  } catch {}
+  return process.cwd();
+}
 
 let dbInstance: Database | null = null;
 
@@ -89,12 +99,15 @@ export async function initDatabase(): Promise<Database> {
 
   let SQL: any;
   try {
+    const dir = getSafeDirname();
     const possibleWasmPaths = [
       path.join(process.cwd(), 'public', 'sql-wasm.wasm'),
+      path.join(process.cwd(), 'dist', 'sql-wasm.wasm'),
       path.join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
-      path.resolve(__dirname, 'sql-wasm.wasm'),
-      path.resolve(__dirname, '..', 'public', 'sql-wasm.wasm'),
-      path.resolve(__dirname, '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+      path.resolve(dir, 'sql-wasm.wasm'),
+      path.resolve(dir, '..', 'public', 'sql-wasm.wasm'),
+      path.resolve(dir, '..', 'dist', 'sql-wasm.wasm'),
+      path.resolve(dir, '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
     ];
 
     let wasmBinary: Buffer | undefined;

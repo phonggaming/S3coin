@@ -34,10 +34,19 @@ export async function apiRequest<T = any>(
         headers,
       });
 
-      const data = await response.json().catch(async () => {
-        const text = await response.text().catch(() => '');
-        return text ? { error: text } : null;
-      });
+      let data: any = null;
+      try {
+        const text = await response.text();
+        if (text) {
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = { error: text.length > 200 ? text.slice(0, 200) + '...' : text };
+          }
+        }
+      } catch {
+        data = null;
+      }
 
       if (!response.ok) {
         const errorMsg =
@@ -45,7 +54,7 @@ export async function apiRequest<T = any>(
           data?.message ||
           data?.reason ||
           (response.status === 500
-            ? 'Lỗi máy chủ (500). Hệ thống đang đồng bộ dữ liệu, vui lòng thử lại sau giây lát.'
+            ? 'Lỗi máy chủ (500). Vui lòng kiểm tra lại thông tin hoặc thử lại.'
             : `Yêu cầu thất bại với mã lỗi ${response.status}`);
         throw new Error(errorMsg);
       }
