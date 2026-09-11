@@ -38,8 +38,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   useEffect(() => {
     // Fetch recent blocks
     apiRequest<{ blocks: Block[] }>('/api/blocks?limit=5')
-      .then((res) => setRecentBlocks(res.blocks))
-      .catch((err) => console.error('Failed to load recent blocks:', err));
+      .then((res) => setRecentBlocks(res?.blocks || []))
+      .catch((err) => console.warn('Recent blocks temporarily unavailable:', err));
 
     // If user is logged in, fetch their miner device status
     if (user?.miner_token) {

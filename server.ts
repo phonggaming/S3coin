@@ -49,7 +49,30 @@ const PORT = 3000;
 
 // Middleware
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json({ limit: '1mb' }));
+
+// Handle pre-parsed bodies from Serverless environments (Vercel) safely
+app.use((req, res, next) => {
+  if (typeof req.body === 'string' && req.body.trim().startsWith('{')) {
+    try {
+      req.body = JSON.parse(req.body);
+    } catch {}
+  }
+  next();
+});
+
+// JSON body parser with safety check for already parsed bodies
+app.use((req, res, next) => {
+  if (req.body !== undefined && typeof req.body === 'object' && req.body !== null && Object.keys(req.body).length > 0) {
+    return next();
+  }
+  express.json({ limit: '2mb' })(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ error: 'Invalid JSON body in request' });
+    }
+    next();
+  });
+});
+
 app.use(express.urlencoded({ extended: true }));
 
 // Request logging middleware
@@ -59,6 +82,17 @@ app.use((req, res, next) => {
     console.log(`[API] ${req.method} ${req.path} from ${ip}`);
   }
   next();
+});
+
+// Ensure database and genesis block are fully initialized before processing API requests
+app.use('/api', async (req, res, next) => {
+  try {
+    await ensureInitialized();
+    next();
+  } catch (err: any) {
+    console.error('[DB Readiness Error]:', err);
+    res.status(500).json({ error: 'Database service is initializing. Please retry in a few moments: ' + (err?.message || '') });
+  }
 });
 
 // ==========================================
@@ -297,10 +331,25 @@ export async function ensureInitialized() {
       console.log('[S3COIN] Initializing S3Coin Database & Genesis...');
       await initDatabase();
       initGenesisBlock();
-    })();
+    })().catch((err) => {
+      initPromise = null; // Allow subsequent requests to retry if initialization failed
+      throw err;
+    });
   }
   return initPromise;
 }
+
+// Global Express error handler to guarantee JSON error output instead of HTML
+app.use((err: any, req: Request, res: Response, next: express.NextFunction) => {
+  console.error('[API Error Handler Caught]:', err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  const statusCode = typeof err?.status === 'number' ? err.status : 500;
+  res.status(statusCode).json({
+    error: err?.message || 'Internal Server Error',
+  });
+});
 
 // ==========================================
 // 6. INITIALIZE DB & START SERVER

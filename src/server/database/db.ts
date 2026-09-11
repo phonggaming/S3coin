@@ -1,20 +1,56 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import initSqlJs, { Database } from 'sql.js';
 
-let dbInstance: Database | null = null;
-const isVercel = Boolean(process.env.VERCEL);
-const DB_DIR = isVercel ? '/tmp' : (process.env.DATABASE_DIR || path.join(process.cwd(), 'data'));
-const DB_PATH = process.env.DATABASE_PATH 
-  ? path.resolve(process.env.DATABASE_PATH)
-  : path.join(DB_DIR, 's3coin.sqlite');
-const BACKUP_JSON_PATH = path.join(DB_DIR, 's3coin_backup.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Helper to ensure directory exists
+let dbInstance: Database | null = null;
+
+// Determine writable directory for SQLite database
+function getWritableDbDir(): string {
+  if (process.env.DATABASE_DIR) return process.env.DATABASE_DIR;
+  if (process.env.VERCEL || process.env.NOW_REGION || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return '/tmp';
+  }
+  const localDir = path.join(process.cwd(), 'data');
+  try {
+    if (!fs.existsSync(localDir)) {
+      fs.mkdirSync(localDir, { recursive: true });
+    }
+    const testFile = path.join(localDir, '.write_test');
+    fs.writeFileSync(testFile, 'ok');
+    fs.unlinkSync(testFile);
+    return localDir;
+  } catch {
+    return '/tmp';
+  }
+}
+
+function resolveDbPath(): string {
+  if (process.env.DATABASE_PATH) {
+    // If running in serverless / Vercel with read-only root, redirect to /tmp
+    if (process.env.VERCEL || process.env.NOW_REGION) {
+      return path.join('/tmp', path.basename(process.env.DATABASE_PATH));
+    }
+    return path.resolve(process.env.DATABASE_PATH);
+  }
+  return path.join(getWritableDbDir(), 's3coin.sqlite');
+}
+
+const DB_PATH = resolveDbPath();
+const BACKUP_JSON_PATH = path.join(path.dirname(DB_PATH), 's3coin_backup.json');
+
+// Helper to ensure directory exists safely
 function ensureDirExists(filePath: string) {
-  const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn(`[DB] Could not ensure directory for ${filePath}:`, err);
   }
 }
 
@@ -50,7 +86,43 @@ export async function initDatabase(): Promise<Database> {
   if (dbInstance) return dbInstance;
 
   ensureDirExists(DB_PATH);
-  const SQL = await initSqlJs();
+
+  let SQL: any;
+  try {
+    const possibleWasmPaths = [
+      path.join(process.cwd(), 'public', 'sql-wasm.wasm'),
+      path.join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+      path.resolve(__dirname, 'sql-wasm.wasm'),
+      path.resolve(__dirname, '..', 'public', 'sql-wasm.wasm'),
+      path.resolve(__dirname, '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+    ];
+
+    let wasmBinary: Buffer | undefined;
+    let resolvedWasmPath: string | undefined;
+
+    for (const p of possibleWasmPaths) {
+      if (fs.existsSync(p)) {
+        try {
+          wasmBinary = fs.readFileSync(p);
+          resolvedWasmPath = p;
+          break;
+        } catch {}
+      }
+    }
+
+    SQL = await initSqlJs({
+      ...(wasmBinary ? { wasmBinary } : {}),
+      locateFile: (file: string) => {
+        if (file.endsWith('.wasm') && resolvedWasmPath) {
+          return resolvedWasmPath;
+        }
+        return file;
+      },
+    });
+  } catch (wasmErr) {
+    console.warn('[DB] Custom wasm loader failed, falling back to default initSqlJs:', wasmErr);
+    SQL = await initSqlJs();
+  }
 
   if (fs.existsSync(DB_PATH)) {
     try {

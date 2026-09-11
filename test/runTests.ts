@@ -129,7 +129,7 @@ async function run() {
   let validNonce = -1;
   let validHash = '';
   const startTime = Date.now();
-  for (let n = 0; n < 2000000; n++) {
+  for (let n = 0; n < 10000000; n++) {
     const h = calculateHeaderHash(job.version, job.previous_hash, job.merkle_root, job.timestamp, job.difficulty, n);
     if (isHashValid(h, job.target)) {
       validNonce = n;

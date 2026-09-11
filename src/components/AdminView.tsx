@@ -60,7 +60,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ user }) => {
         setBlockTargetTime(statsRes.settings.block_target_time || '120');
       }
     } catch (err: any) {
-      console.error('Error fetching admin data:', err);
+      console.warn('Error fetching admin data:', err);
     } finally {
       setLoading(false);
     }

@@ -24,7 +24,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ user, onOpenAuth }) =>
       setSubmissions(res.submissions);
       setTotal(res.total);
     } catch (err) {
-      console.error('Failed to load mining history:', err);
+      console.warn('Failed to load mining history:', err);
     } finally {
       setLoading(false);
     }

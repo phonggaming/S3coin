@@ -16,9 +16,23 @@ import { HistoryView } from './components/HistoryView';
 import { AdminView } from './components/AdminView';
 import { Cpu, ShieldCheck, Activity, Terminal } from 'lucide-react';
 
+const DEFAULT_STATS: BlockchainStats = {
+  ticker: 'S3',
+  name: 'S3Coin',
+  chain_tip: 1,
+  latest_block_hash: '0000000000000000000000000000000000000000000000000000000000000000',
+  current_difficulty: 1,
+  current_target: '000007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+  total_blocks: 1,
+  active_miners: 0,
+  unique_miners: 0,
+  exchange_rate: 0.1,
+  block_target_time: 120,
+};
+
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
-  const [stats, setStats] = useState<BlockchainStats | null>(null);
+  const [stats, setStats] = useState<BlockchainStats>(DEFAULT_STATS);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -43,9 +57,11 @@ export default function App() {
   const fetchStats = useCallback(async () => {
     try {
       const res = await apiRequest<BlockchainStats>('/api/blockchain/stats');
-      setStats(res);
+      if (res && res.ticker) {
+        setStats(res);
+      }
     } catch (err) {
-      console.error('Failed to fetch stats:', err);
+      console.warn('Network stats temporarily unavailable:', err);
     }
   }, []);
 

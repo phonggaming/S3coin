@@ -1,15 +1,41 @@
 {
   "users": [
     {
-      "id": 1,
-      "username": "miner_tester_1789123991469",
-      "email": "miner_tester_1789123991469@s3coin.test",
+      "id": 6,
+      "username": "miner_tester_1789126411363",
+      "email": "miner_tester_1789126411363@s3coin.test",
       "password_hash": "hash",
-      "miner_token": "b5b82622a7f48faefe6c85a9c7260c4b72051758542cfc275228baa735573738",
+      "miner_token": "88b2365c0d730519007e5ba5353c5484391059b5e34c60202c6f65fadd7d904a",
       "balance_s3": 50,
       "total_mined": 50,
-      "created_at": 1789123991470,
+      "created_at": 1789126411363,
       "last_login": null,
+      "status": "active",
+      "is_admin": 0
+    },
+    {
+      "id": 7,
+      "username": "user_1789126420900",
+      "email": "user_1789126420900@example.com",
+      "password_hash": "$2b$10$gIDPRrCSF/CYtu44mc5xdOeMbRuZ4nDr7NNLHfdD1w469WFC6Fg8i",
+      "miner_token": "539799c3b4ecfd380868c4d3b6443f10fba91f1b547353c1e0d70f4f2d0e148b",
+      "balance_s3": 0,
+      "total_mined": 0,
+      "created_at": 1789126421167,
+      "last_login": 1789126421315,
+      "status": "active",
+      "is_admin": 0
+    },
+    {
+      "id": 8,
+      "username": "phong_test1",
+      "email": "phong_test1@example.com",
+      "password_hash": "$2b$10$zdlIPcjQ2T9/fcAGd2giKOn91I1zT4cxveEza9OhVmcCZkp9OYzBW",
+      "miner_token": "cd936fa6256f2f89ac14616cba73e35698aa92b6990df7a5e52e0fc26e0a7086",
+      "balance_s3": 0,
+      "total_mined": 0,
+      "created_at": 1789126455487,
+      "last_login": 1789126458231,
       "status": "active",
       "is_admin": 0
     }
@@ -27,27 +53,27 @@
       "merkle_root": "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b",
       "nonce": 0,
       "reward": 0,
-      "created_at": 1789123991423
+      "created_at": 1789126411290
     },
     {
       "height": 1,
-      "hash": "000006a9d4f43f261e4f7b692adf949c2b1fefb5efb92dbef26195d0cac87a21",
+      "hash": "000002086c2eeb70c400f64eea0d4cb21fbcf3944f77c90fd929f68ef8fdab08",
       "previous_hash": "8da58578617555d56d5245083b748a8634de37b3518a1483c0be927e71ded40a",
-      "timestamp": 1789123991,
+      "timestamp": 1789126411,
       "difficulty": 1,
       "target": "000007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-      "miner_user_id": 1,
-      "miner_token": "b5b82622a7f48faefe6c85a9c7260c4b72051758542cfc275228baa735573738",
-      "merkle_root": "841940eb2cfa1b3868b217cb6fb35aba74d28bfc2b820c161ceb644724a20c0a",
-      "nonce": 812758,
+      "miner_user_id": 6,
+      "miner_token": "88b2365c0d730519007e5ba5353c5484391059b5e34c60202c6f65fadd7d904a",
+      "merkle_root": "0c58429f0b414d8cf7590b1bc211a38766a37ca75c9563e23ab667b5cb5e51e4",
+      "nonce": 1360510,
       "reward": 50,
-      "created_at": 1789123992598
+      "created_at": 1789126413248
     }
   ],
   "withdrawals": [
     {
-      "id": 1,
-      "user_id": 1,
+      "id": 5,
+      "user_id": 6,
       "amount_s3": 30,
       "amount_vnd": 3,
       "exchange_rate": 0.1,
@@ -55,10 +81,41 @@
       "destination": "0123456789",
       "status": "REJECTED",
       "admin_note": null,
-      "created_at": 1789123992610,
-      "updated_at": 1789123992610
+      "created_at": 1789126413258,
+      "updated_at": 1789126413258
     }
   ],
-  "settings": [],
-  "exported_at": 1789123992615
+  "settings": [
+    {
+      "key": "exchange_rate",
+      "value": "0.1",
+      "updated_at": 1789126420854
+    },
+    {
+      "key": "min_withdraw_vnd",
+      "value": "100000",
+      "updated_at": 1789126420854
+    },
+    {
+      "key": "block_target_time",
+      "value": "120",
+      "updated_at": 1789126420854
+    },
+    {
+      "key": "initial_reward",
+      "value": "100",
+      "updated_at": 1789126420854
+    },
+    {
+      "key": "halving_interval",
+      "value": "210000",
+      "updated_at": 1789126420854
+    },
+    {
+      "key": "current_difficulty",
+      "value": "1",
+      "updated_at": 1789126420854
+    }
+  ],
+  "exported_at": 1789126458234
 }

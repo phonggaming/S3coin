@@ -46,7 +46,7 @@ export const WithdrawalView: React.FC<WithdrawalViewProps> = ({
       const res = await apiRequest<{ withdrawals: Withdrawal[] }>('/api/withdrawals');
       setWithdrawals(res.withdrawals);
     } catch (err: any) {
-      console.error('Failed to load withdrawals:', err);
+      console.warn('Failed to load withdrawals:', err);
     }
   };
 
