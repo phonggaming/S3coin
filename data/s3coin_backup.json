@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "id": 3,
+      "username": "miner_tester_1789122123775",
+      "email": "miner_tester_1789122123775@s3coin.test",
+      "password_hash": "hash",
+      "miner_token": "4bc492b7e9d7b58c46d7dad1b9a118be32b7aea2989cb8f47bab8cfb7fe5b374",
+      "balance_s3": 50,
+      "total_mined": 50,
+      "created_at": 1789122123775,
+      "last_login": null,
+      "status": "active",
+      "is_admin": 0
+    }
+  ],
+  "blocks": [
+    {
+      "height": 0,
+      "hash": "8da58578617555d56d5245083b748a8634de37b3518a1483c0be927e71ded40a",
+      "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "timestamp": 1700000000,
+      "difficulty": 1,
+      "target": "000007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "miner_user_id": 0,
+      "miner_token": "0000000000000000000000000000000000000000000000000000000000000000",
+      "merkle_root": "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b",
+      "nonce": 0,
+      "reward": 0,
+      "created_at": 1789122123759
+    },
+    {
+      "height": 1,
+      "hash": "000004cfa44598c6259c30b204ad54fd470ea3f1f846626a0936bc05129d4d73",
+      "previous_hash": "8da58578617555d56d5245083b748a8634de37b3518a1483c0be927e71ded40a",
+      "timestamp": 1789122123,
+      "difficulty": 1,
+      "target": "000007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "miner_user_id": 3,
+      "miner_token": "4bc492b7e9d7b58c46d7dad1b9a118be32b7aea2989cb8f47bab8cfb7fe5b374",
+      "merkle_root": "ad45cd85f989bb1020d6636642e50f2fabe13e0458085554cfee7cde99086ea8",
+      "nonce": 296349,
+      "reward": 50,
+      "created_at": 1789122124265
+    }
+  ],
+  "withdrawals": [
+    {
+      "id": 2,
+      "user_id": 3,
+      "amount_s3": 30,
+      "amount_vnd": 3,
+      "exchange_rate": 0.1,
+      "method": "BANK",
+      "destination": "0123456789",
+      "status": "REJECTED",
+      "admin_note": null,
+      "created_at": 1789122124282,
+      "updated_at": 1789122124282
+    }
+  ],
+  "settings": [],
+  "exported_at": 1789122124287
+}

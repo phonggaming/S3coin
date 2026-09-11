@@ -1,0 +1,6 @@
+{
+  "name": "S3Coin",
+  "description": "A real SHA-256 Proof-of-Work cryptocurrency and mining system designed for ESP32-S3 hardware with block explorer, live mining jobs, and secure verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
